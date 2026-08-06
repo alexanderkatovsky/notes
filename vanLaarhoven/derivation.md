@@ -25,6 +25,15 @@ itself. Write $[x,y]$ for the internal hom — this *is* the hom-object
 $\mathcal{C}(x,y)$ — and $\times$ for the product. Models: $\mathbf{Set}$,
 and Hask (ignoring the usual complications with bottoms).
 
+Self-enrichment is exactly what closedness buys. It is not merely that the
+objects $[x,y]$ exist: the currying/evaluation adjunction makes composition
+itself internal, a morphism $[y,z] \times [x,y] \to [x,z]$ — in Haskell,
+`(.)` is a program — with identities as global elements $1 \to [x,x]$
+(`id`). The ordinary hom-set is recovered as the points of the hom-object,
+$\mathcal{C}(x,y) \cong \mathcal{C}(1,[x,y])$. Any symmetric monoidal closed
+category is self-enriched in this way; cartesian closed is the case used
+here.
+
 All functors are $\mathcal{C}$-enriched. A Haskell `Functor` is exactly a
 Hask-enriched endofunctor: `fmap :: (a -> b) -> (f a -> f b)` is itself an
 internal function, which is precisely the enrichment.
