@@ -34,9 +34,9 @@ Haskell's `forall` is its syntax. Its points are families satisfying the
 wedge condition, which for a Haskell type is the free theorem — so
 parametric terms are exactly points of the end, and the lens type reads
 
-$$
+```math
 \mathrm{Lens} \;=\; \int_{F} \bigl[\,[a, Fb],\ [s, Ft]\,\bigr].
-$$
+```
 
 **Convention of the calculus.** Every isomorphism below is natural in all of
 its free variables ($a$, $b$, $s$, $t$, $x$, $F$, …), and every rule of the
@@ -52,22 +52,31 @@ The rules used below, each stated once:
 **(1) Functor categories.** $[\mathcal{C},\mathcal{C}]$ is a
 $\mathcal{C}$-category with hom-objects
 
-$$
+```math
 \mathrm{Nat}(F,G) = \int_x [Fx,\ Gx]
-\qquad\text{(Haskell: } \verb|forall x. f x -> g x|\text{)}.
-$$
+```
 
-**(2) Currying.** $[\,a \times y,\ z\,] \cong [\,a,\ [y,z]\,]$.
+(in Haskell: `forall x. f x -> g x`).
 
-**(3) Continuity.** $\Bigl[\,w,\ \int_x T(x)\,\Bigr] \cong \int_x [\,w,\ T(x)\,]$.
+**(2) Currying.**
+
+```math
+[\,a \times y,\ z\,] \cong [\,a,\ [y,z]\,].
+```
+
+**(3) Continuity.**
+
+```math
+\Bigl[\,w,\ \int_x T(x)\,\Bigr] \cong \int_x [\,w,\ T(x)\,].
+```
 
 **(4) Yoneda.** For any $\mathcal{C}$-category $\mathcal{A}$, object
 $c \in \mathcal{A}$, and $\mathcal{C}$-functor
 $K \colon \mathcal{A} \to \mathcal{C}$:
 
-$$
+```math
 \int_{y \in \mathcal{A}} [\,\mathcal{A}(c,y),\ K y\,] \cong K c.
-$$
+```
 
 Both Yoneda steps below are instances of (4), taken in different categories:
 first $\mathcal{A} = \mathcal{C}$, then $\mathcal{A} =
@@ -80,9 +89,9 @@ first $\mathcal{A} = \mathcal{C}$, then $\mathcal{A} =
 
 ## 3. The indexed store functor
 
-$$
+```math
 \mathrm{Store}_{a,b}(x) = a \times [b,x].
-$$
+```
 
 ```haskell
 data Store a b x = Store a (b -> x)
@@ -93,10 +102,10 @@ instance Functor (Store a b) where
 
 (The `lens` library calls this `Context`, with the fields flipped.)
 
-Conceptually, $\mathrm{Store}_{a,b} = \mathrm{Lan}_{b}\, a$, the left Kan
+Conceptually, $\mathrm{Store}_{a,b} = \mathrm{Lan}_b\ a$, the left Kan
 extension of $a \colon \mathbf{1} \to \mathcal{C}$ along
 $b \colon \mathbf{1} \to \mathcal{C}$: the pointwise formula
-$(\mathrm{Lan}_b\, a)(x) = \int^{\ast \in \mathbf{1}} [b,x] \odot a$ is a
+$(\mathrm{Lan}_b\ a)(x) = \int^{\ast \in \mathbf{1}} [b,x] \odot a$ is a
 coend of copowers, and over our cartesian self-enriched base the copower is
 the product $a \times [b,x]$. This is where coends live in this story; the
 derivation itself needs only ends.
@@ -105,7 +114,7 @@ derivation itself needs only ends.
 
 ## 4. Lemma: maps out of the store functor
 
-$$
+```math
 \begin{aligned}
 \mathrm{Nat}(\mathrm{Store}_{a,b},\ F)
 &= \int_x \bigl[\,a \times [b,x],\ Fx\,\bigr]
@@ -117,7 +126,7 @@ $$
 &\cong [\,a,\ Fb\,]
   && \text{(4) in } \mathcal{A} = \mathcal{C}
 \end{aligned}
-$$
+```
 
 In Haskell, the same chain, step for step:
 
@@ -129,11 +138,11 @@ forall x. (a, b -> x) -> f x
 ```
 
 Equivalently: the Lemma is the Kan adjunction
-$[\mathcal{C},\mathcal{C}](\mathrm{Lan}_b\, a,\ F) \cong [a,\ Fb]$.
+$[\mathcal{C},\mathcal{C}](\mathrm{Lan}_b\ a,\ F) \cong [a, Fb]$.
 
 As always with Yoneda, the isomorphism is "evaluate at the identity":
 $k \colon a \to Fb$ corresponds to the transformation
-$(u,g) \mapsto Fg\,(k\,u)$, and the inverse evaluates a transformation at
+$(u,g) \mapsto F(g)(k(u))$, and the inverse evaluates a transformation at
 $(u, \mathrm{id}_b)$ — the Haskell value `Store u id`. These two assignments
 become `toVL` and `fromVL` in Section 7.
 
@@ -141,7 +150,7 @@ become `toVL` and `fromVL` in Section 7.
 
 ## 5. Theorem
 
-$$
+```math
 \begin{aligned}
 \int_F \bigl[\,[a,Fb],\ [s,Ft]\,\bigr]
 &\cong \int_F \bigl[\,\mathrm{Nat}(\mathrm{Store}_{a,b},\ F),\ [s,Ft]\,\bigr]
@@ -151,15 +160,15 @@ $$
 &= [\,s,\ a \times [b,t]\,]
   && \text{def.\ of } \mathrm{Store}
 \end{aligned}
-$$
+```
 
-$$
+```math
 \boxed{\;
 \int_F \bigl[\,[a,Fb],\ [s,Ft]\,\bigr]
 \;\cong\;
 [\,s,\ a \times [b,t]\,]
 \;}
-$$
+```
 
 ```text
 forall f. Functor f => (a -> f b) -> s -> f t   ≅   s -> (a, b -> t)
@@ -184,18 +193,18 @@ copower defining $\mathrm{Store}$. Hence:
 * Over any $\mathcal{V}$-category $\mathcal{C}$ tensored over a symmetric
   monoidal closed $\mathcal{V}$, put
   $\mathrm{Store}_{a,b}(x) = \mathcal{C}(b,x) \odot a$ (still
-  $\mathrm{Lan}_b\, a$); both chains hold verbatim and give
+  $\mathrm{Lan}_b\ a$); both chains hold verbatim and give
 
-  $$
-  \int_F [\,\mathcal{C}(a,Fb),\ \mathcal{C}(s,Ft)\,]
+  ```math
+  \int_F \bigl[\,\mathcal{C}(a,Fb),\ \mathcal{C}(s,Ft)\,\bigr]
   \cong
   \mathcal{C}\bigl(s,\ \mathcal{C}(b,t) \odot a\bigr).
-  $$
+  ```
 
 * With $\mathcal{V} = \mathbf{Set}$ and $\mathcal{C}$ locally small with
   small coproducts, this is the classical statement — but note
   $\mathcal{C}(b,t) \odot a$ is then a coproduct of *external*-hom-many
-  copies of $a$. It agrees with the familiar $s \to (a,\ b \to t)$ only when
+  copies of $a$. It agrees with the familiar $s \to (a, b \to t)$ only when
   $\mathcal{C} = \mathbf{Set}$, where external and internal hom coincide.
 
 * `Lens s t a b` is a Haskell *type*, not a set, so the self-enriched
@@ -247,13 +256,9 @@ set l s b = runIdentity (l (\_ -> Identity b) s)
 
 Setting $b = a$, $t = s$:
 
-$$
-\texttt{Lens' s a}
-\;\cong\;
-s \to \bigl(a,\ a \to s\bigr)
-\;\cong\;
-(s \to a) \times (s \to a \to s),
-$$
+```text
+Lens' s a  ≅  s -> (a, a -> s)  ≅  (s -> a, s -> a -> s)
+```
 
 a getter and a setter (a function into a product is a pair of functions).
 
