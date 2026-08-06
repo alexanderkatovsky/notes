@@ -188,29 +188,27 @@ endofunctors containing $\mathrm{Store}_{a,b}$ (cf. Jaskelioff–O'Connor).
 ## 6. Generality
 
 The derivation used only the closed structure of $\mathcal{C}$ and the
-copower defining $\mathrm{Store}$. Hence:
+copower defining $\mathrm{Store}$, so it generalizes. Over any
+$\mathcal{V}$-category $\mathcal{C}$ tensored over a symmetric monoidal
+closed $\mathcal{V}$, put
+$\mathrm{Store}_{a,b}(x) = \mathcal{C}(b,x) \odot a$ (still
+$\mathrm{Lan}_b\ a$); both chains hold verbatim and give
 
-* Over any $\mathcal{V}$-category $\mathcal{C}$ tensored over a symmetric
-  monoidal closed $\mathcal{V}$, put
-  $\mathrm{Store}_{a,b}(x) = \mathcal{C}(b,x) \odot a$ (still
-  $\mathrm{Lan}_b\ a$); both chains hold verbatim and give
+```math
+\int_F \bigl[\,\mathcal{C}(a,Fb),\ \mathcal{C}(s,Ft)\,\bigr]
+\cong
+\mathcal{C}\bigl(s,\ \mathcal{C}(b,t) \odot a\bigr).
+```
 
-  ```math
-  \int_F \bigl[\,\mathcal{C}(a,Fb),\ \mathcal{C}(s,Ft)\,\bigr]
-  \cong
-  \mathcal{C}\bigl(s,\ \mathcal{C}(b,t) \odot a\bigr).
-  ```
+With $\mathcal{V} = \mathbf{Set}$ and $\mathcal{C}$ locally small with small
+coproducts, this is the classical statement — but note
+$\mathcal{C}(b,t) \odot a$ is then a coproduct of *external*-hom-many copies
+of $a$. It agrees with the familiar $s \to (a, b \to t)$ only when
+$\mathcal{C} = \mathbf{Set}$, where external and internal hom coincide.
 
-* With $\mathcal{V} = \mathbf{Set}$ and $\mathcal{C}$ locally small with
-  small coproducts, this is the classical statement — but note
-  $\mathcal{C}(b,t) \odot a$ is then a coproduct of *external*-hom-many
-  copies of $a$. It agrees with the familiar $s \to (a, b \to t)$ only when
-  $\mathcal{C} = \mathbf{Set}$, where external and internal hom coincide.
-
-* `Lens s t a b` is a Haskell *type*, not a set, so the self-enriched
-  reading $\mathcal{C} = \mathcal{V} = $ Hask used above is the honest
-  formalization — and it is what makes the internal hom `b -> t` appear in
-  the answer.
+`Lens s t a b` is a Haskell *type*, not a set, so the self-enriched reading
+$\mathcal{C} = \mathcal{V} = $ Hask used above is the honest formalization —
+and it is what makes the internal hom `b -> t` appear in the answer.
 
 ---
 
