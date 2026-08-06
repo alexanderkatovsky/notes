@@ -207,7 +207,7 @@ of $a$. It agrees with the familiar $s \to (a, b \to t)$ only when
 $\mathcal{C} = \mathbf{Set}$, where external and internal hom coincide.
 
 `Lens s t a b` is a Haskell *type*, not a set, so the self-enriched reading
-$\mathcal{C} = \mathcal{V} = $ Hask used above is the honest formalization —
+$\mathcal{C} = \mathcal{V} =$ Hask used above is the honest formalization —
 and it is what makes the internal hom `b -> t` appear in the answer.
 
 ---
