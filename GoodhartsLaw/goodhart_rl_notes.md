@@ -2,7 +2,8 @@
 
 Notes from a walkthrough of Karwowski et al., **“Goodhart’s Law in Reinforcement Learning.”**
 
-The central idea is to reinterpret RL geometrically: an MDP defines a constrained space of achievable behaviours, while a reward function defines a direction in that space. Increasingly optimizing an imperfect proxy reward can eventually move the agent away from the true objective.
+
+The central idea is to reinterpret RL geometrically. A reward function is a vector $R\in\mathbb R^{|S||A|}$, while the set of achievable behaviours is represented by the occupancy measures $\eta^\pi$ induced by policies $\pi$. These occupancy measures form a convex polytope $\Omega$ lying in an affine subspace of dimension $|S|(|A|-1)$ within $\mathbb R^{|S||A|}$. Each policy $\pi$ corresponds to an occupancy measure $\eta^\pi\in\Omega$, and its expected reward is the dot product $J_R(\pi)=\eta^\pi\cdot R$. Thus, RL can be viewed as optimizing a linear functional over the constrained occupancy polytope. Goodharting then arises when $R$ is an imperfect proxy for the true objective: increasingly optimizing the proxy can eventually move the policy toward occupancy measures that score better under the proxy but worse under the true reward.
 
 ## 1. The basic MDP
 
