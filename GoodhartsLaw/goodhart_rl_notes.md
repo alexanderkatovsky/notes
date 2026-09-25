@@ -7,6 +7,8 @@ The central idea is to reinterpret RL geometrically. A reward function is a vect
 
 These occupancy measures form a convex polytope $\Omega$ lying in an affine subspace of dimension $|S|(|A|-1)$ within $\mathbb R^{|S||A|}$. Each policy $\pi$ corresponds to an occupancy measure $\eta^\pi\in\Omega$, and its expected reward is the dot product $J_R(\pi)=\eta^\pi\cdot R$. Thus, RL can be viewed as optimizing a linear functional over the constrained occupancy polytope. Goodharting then arises when $R$ is an imperfect proxy for the true objective: increasingly optimizing the proxy can eventually move the policy toward occupancy measures that score better under the proxy but worse under the true reward.
 
+The key section in these notes below is `16. Concavity of Steepest Ascent` which shows how the Goodhart effect can happen.
+
 ## 1. The basic MDP
 
 An MDP can be written as
@@ -485,6 +487,13 @@ t_i\cdot R_0 < 0.
 ```
 
 Thus, although the direction $t_i$ still improves the proxy reward $R_1$, it can actually decrease the true reward $R_0$. This is the geometric mechanism behind Goodharting: continued optimization of an imperfect proxy can eventually push the optimization direction across the $90^\circ$ boundary where further proxy improvement becomes harmful to the true objective.
+
+In the paper, the proposed method for preventing Goodharting detects when the learning algorithm first reaches the boundary of the feasible occupancy-measure space. In the idealized linear setting, this corresponds to the first boundary point $\eta_1$.
+
+The rationale is that reaching the boundary marks a transition: the optimizer has exhausted the unconstrained directions that give the largest improvements in the proxy reward. Beyond this point, further optimization is increasingly constrained by the geometry of $\Omega$, and the optimization directions become progressively less aligned with $R_1$. This creates the possibility of entering the Goodhart regime, where those directions can become negatively aligned with the true reward $R_0$.
+
+The relationship with optimization pressure is therefore that greater pressure moves the learning algorithm further along this optimization path, causing it to reach the boundary—and potentially the Goodhart regime—sooner.
+
 
 ## Reference
 
