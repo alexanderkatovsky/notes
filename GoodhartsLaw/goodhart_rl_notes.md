@@ -455,7 +455,7 @@ The neural network, optimizer, and training algorithm determine **how** you trav
 
 ## 16. Concavity of Steepest Ascent
 
-Maximizing the linear functional \(J_R\) on \(\Omega\) implies a sequence \(\{\eta_i\}\), where \(\eta_0\) is the starting point and subsequent points move toward the boundary of \(\Omega\). They form a piecewise linear curve converging to a policy that maximizes \(R\).
+Maximizing the linear functional $J_R$ on $\Omega$ implies a sequence $\{\eta_i\}$, where $\eta_0$ is the starting point and subsequent points move toward the boundary of $\Omega$. They form a piecewise linear curve converging to a policy that maximizes $R$.
 
 Proposition 3 says that the segments of this piecewise linear curve, with directions
 
@@ -463,16 +463,16 @@ Proposition 3 says that the segments of this piecewise linear curve, with direct
 t_i = \frac{\eta_{i+1}-\eta_i}{\|\eta_{i+1}-\eta_i\|},
 ```
 
-satisfy \(t_i\cdot R\) monotonically decreasing. Since
+satisfy $t_i\cdot R$ monotonically decreasing. Since
 
 ```math
 t_i\cdot R = \|t_i\|\|R\|\cos(\theta_i)
 = \|R\|\cos(\theta_i),
 ```
 
-where \(\theta_i\) is the angle between \(t_i\) and \(R\), the sequence of angles \(\theta_i\) increases. Intuitively, the big, easy corrections to the policy are made first, followed by progressively more constrained and particular ones which become increasingly orthogonal to \(R\).
+where $\theta_i$ is the angle between $t_i$ and $R$, the sequence of angles $\theta_i$ increases. Intuitively, the big, easy corrections to the policy are made first, followed by progressively more constrained and particular ones which become increasingly orthogonal to $R$.
 
-Now suppose we are optimizing for a proxy reward \(R_1\), while \(R_0\) is the true reward. As the optimization directions \(t_i\) become increasingly orthogonal to \(R_1\), the angle between \(t_i\) and \(R_0\) can be pushed over the edge past \(\pi/2\), because \(R_0\) is itself separated from \(R_1\) by some angle. Once
+Now suppose we are optimizing for a proxy reward $R_1$, while $R_0$ is the true reward. As the optimization directions $t_i$ become increasingly orthogonal to $R_1$, the angle between $t_i$ and $R_0$ can be pushed over the edge past $\pi/2$, because $R_0$ is itself separated from $R_1$ by some angle. Once
 
 ```math
 \angle(t_i,R_0) > \frac{\pi}{2},
@@ -484,7 +484,7 @@ we have
 t_i\cdot R_0 < 0.
 ```
 
-Thus, although the direction \(t_i\) still improves the proxy reward \(R_1\), it can actually decrease the true reward \(R_0\). This is the geometric mechanism behind Goodharting: continued optimization of an imperfect proxy can eventually push the optimization direction across the \(90^\circ\) boundary where further proxy improvement becomes harmful to the true objective.
+Thus, although the direction $t_i$ still improves the proxy reward $R_1$, it can actually decrease the true reward $R_0$. This is the geometric mechanism behind Goodharting: continued optimization of an imperfect proxy can eventually push the optimization direction across the $90^\circ$ boundary where further proxy improvement becomes harmful to the true objective.
 
 ## Reference
 
