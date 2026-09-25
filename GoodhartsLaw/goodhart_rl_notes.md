@@ -102,7 +102,7 @@ This is the set of all occupancy measures achievable by policies.
 The important geometric result is
 
 ```math
-\boxed{\Omega=\operatorname{conv}\{\eta^\pi:\pi\in\Pi_0\}}
+\boxed{\Omega=\mathrm{conv}\{\eta^\pi:\pi\in\Pi_0\}}
 ```
 
 where $\Pi_0$ is the set of deterministic policies.
