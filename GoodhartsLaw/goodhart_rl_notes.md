@@ -59,7 +59,7 @@ Intuitively, it represents the expected discounted amount of time that policy $\
 
 A common normalized definition is
 
-$$
+```math
 \eta^\pi(s,a)
 =
 (1-\gamma)
@@ -69,7 +69,7 @@ $$
 \gamma^t
 \mathbf 1\{s_t=s,a_t=a\}
 \right].
-$$
+```
 
 The exact normalization convention matters for factors of $(1-\gamma)$, but the geometric idea is the same: each policy becomes a vector describing how much occupancy it puts on every state-action pair.
 
