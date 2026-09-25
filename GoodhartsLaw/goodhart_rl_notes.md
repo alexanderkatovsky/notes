@@ -3,7 +3,7 @@
 Notes from a walkthrough of Karwowski et al., **“Goodhart’s Law in Reinforcement Learning.”**
 
 
-The central idea is to reinterpret RL geometrically. A reward function is a vector $R\in\mathbb R^{|S||A|}$, while the set of achievable behaviours is represented by occupancy measures—which, crucially, live in the same vector space — $\eta^\pi\in\mathbb R^{|S||A|}$ , where $\eta^\pi$ is the occupancy measure induced by policy $\pi$. This recasts the Markov Decision Process, which describes the environment in which reinforcement learning takes place, in terms of vector spaces and geometric constraints.
+The central idea is to reinterpret RL geometrically. A reward function is a vector $R\in\mathbb R^{|S||A|}$, while the set of achievable behaviours is represented by occupancy measures—which, **crucially, live in the same vector space** — $\eta^\pi\in\mathbb R^{|S||A|}$ , where $\eta^\pi$ is the occupancy measure induced by policy $\pi$. This recasts the Markov Decision Process, which describes the environment in which reinforcement learning takes place, in terms of vector spaces and geometric constraints.
 
 These occupancy measures form a convex polytope $\Omega$ lying in an affine subspace of dimension $|S|(|A|-1)$ within $\mathbb R^{|S||A|}$. Each policy $\pi$ corresponds to an occupancy measure $\eta^\pi\in\Omega$, and its expected reward is the dot product $J_R(\pi)=\eta^\pi\cdot R$. Thus, RL can be viewed as optimizing a linear functional over the constrained occupancy polytope. Goodharting then arises when $R$ is an imperfect proxy for the true objective: increasingly optimizing the proxy can eventually move the policy toward occupancy measures that score better under the proxy but worse under the true reward.
 
@@ -452,6 +452,39 @@ Or, more compactly:
 ```
 
 The neural network, optimizer, and training algorithm determine **how** you traverse this space in a concrete implementation. The geometric argument is intended to explain the more general phenomenon.
+
+## 16. Concavity of Steepest Ascent
+
+Maximizing the linear functional \(J_R\) on \(\Omega\) implies a sequence \(\{\eta_i\}\), where \(\eta_0\) is the starting point and subsequent points move toward the boundary of \(\Omega\). They form a piecewise linear curve converging to a policy that maximizes \(R\).
+
+Proposition 3 says that the segments of this piecewise linear curve, with directions
+
+```math
+t_i = \frac{\eta_{i+1}-\eta_i}{\|\eta_{i+1}-\eta_i\|},
+```
+
+satisfy \(t_i\cdot R\) monotonically decreasing. Since
+
+```math
+t_i\cdot R = \|t_i\|\|R\|\cos(\theta_i)
+= \|R\|\cos(\theta_i),
+```
+
+where \(\theta_i\) is the angle between \(t_i\) and \(R\), the sequence of angles \(\theta_i\) increases. Intuitively, the big, easy corrections to the policy are made first, followed by progressively more constrained and particular ones which become increasingly orthogonal to \(R\).
+
+Now suppose we are optimizing for a proxy reward \(R_1\), while \(R_0\) is the true reward. As the optimization directions \(t_i\) become increasingly orthogonal to \(R_1\), the angle between \(t_i\) and \(R_0\) can be pushed over the edge past \(\pi/2\), because \(R_0\) is itself separated from \(R_1\) by some angle. Once
+
+```math
+\angle(t_i,R_0) > \frac{\pi}{2},
+```
+
+we have
+
+```math
+t_i\cdot R_0 < 0.
+```
+
+Thus, although the direction \(t_i\) still improves the proxy reward \(R_1\), it can actually decrease the true reward \(R_0\). This is the geometric mechanism behind Goodharting: continued optimization of an imperfect proxy can eventually push the optimization direction across the \(90^\circ\) boundary where further proxy improvement becomes harmful to the true objective.
 
 ## Reference
 
