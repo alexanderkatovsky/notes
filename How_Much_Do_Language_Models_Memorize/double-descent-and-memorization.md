@@ -10,3 +10,19 @@ Two papers discuss double descent while moving along different axes:
 **Contrast:** Morris moves along the *data-size axis*: more examples eventually make sample-specific memorization insufficient relative to the dataset's information content, encouraging generalization. Wilson moves along the *feature-dimension axis*: more features create more interpolating solutions, and the learning rule's implicit bias can select one that generalizes.
 
 Both show that fitting the training set does not by itself determine generalization, but their thresholds and mechanisms should not be conflated. Exceeding estimated memorization capacity is not automatically the same as crossing the linear-model interpolation threshold, and a larger feature space alone does not guarantee better generalization.
+
+## Memorization as information through training
+
+In Morris et al.'s statistical framing, the training dataset $X$ and trained model $\hat{\Theta}$ are random variables. The channel from data to trained model can be stochastic because of data sampling, initialization, minibatch order, and other training randomness. Thus mutual information asks how much information about the dataset is statistically present in the distribution of trained models—not merely what might be decoded from one fixed parameter vector:
+
+```math
+I(X;\hat{\Theta})
+```
+
+The training procedure matters because it shapes the conditional distribution:
+
+```math
+p(\hat{\Theta}\mid X)
+```
+
+The paper then separates information about the particular sample from information explained by the underlying data-generating process. Its practical instance-level estimator does **not** estimate mutual information by repeatedly training and comparing model distributions: it switches to a Kolmogorov-complexity/compression formulation, approximated with model likelihoods for a trained model and datapoint. Accordingly, memorization capacity is a property of the learning setup (including the model and training procedure), not just a count of how many bits a parameter vector could mathematically encode.
