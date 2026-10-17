@@ -81,10 +81,10 @@ I think these technical issues are not imagined to arise in the paper since its 
 Let's suppose our fitted model was instead (making the dependence on $n$ explicit) $T_n = Q(\hat{\Theta}_n)$ with $\hat{\Theta}_n = f(Y^n)$, a deterministic function of the $n$ datapoints $Y^n$.  Here, $Q:\mathbb R^d\to\mathcal F$ for finite $\mathcal F$ is a quantization function where each real number in $\hat{\Theta}_n$ is quantized (e.g. IEEE 754 floating-point format).  The rounding boundary of $Q$ is the subset of $\mathbb R^d$ where $Q$ is discontinuous.  Now the unintended memorization at some $\Theta = \theta$ is
 
 ```math
-\mathrm{mem}_U(Y^n, T_n, \theta) = I(Y^n; T_n|\Theta=\theta) = H(T_n|\Theta=\theta)
+\mathrm{mem}_U(Y^n, T_n, \theta) = I(Y^n; T_n|\Theta=\theta) = H(T_n|\Theta=\theta) + H(T_n|Y^n, \Theta=\theta) = H(T_n|\Theta=\theta)
 ```
 
-It can be shown that for given fixed $\Theta = \theta$, under mild conditions on the design matrix $A$, $\hat{\Theta}_n \xrightarrow{P}\theta$.  If $\theta$ isn't at a rounding boundary of $Q$ then, by the continuous mapping theorem, $T_n  =Q(\hat{\Theta}_n)\xrightarrow{P}Q(\theta)$.  By Fano's inequality:
+[$H(T_n|Y^n, \Theta=\theta) = 0$ since $T_n$ is a deterministic function of $Y^n$] It can be shown that for given fixed $\Theta = \theta$, under mild conditions on the design matrix $A$, $\hat{\Theta}_n \xrightarrow{P}\theta$.  If $\theta$ isn't at a rounding boundary of $Q$ then, by the continuous mapping theorem, $T_n  =Q(\hat{\Theta}_n)\xrightarrow{P}Q(\theta)$.  By Fano's inequality:
 
 ```math
 H(T_n\mid\Theta=\theta)
@@ -95,6 +95,36 @@ H(T_n\mid\Theta=\theta)
 where $p_n(\theta) = P(T_n\neq Q(\theta)|\Theta = \theta)$ and $h_2(p)=-p\log p-(1-p)\log(1-p)$.
 
 Since $p_n(\theta) \to 0$ then $H(T_n|\Theta=\theta) \to 0$
+
+### Komologorov Complexity
+
+I think the paper skirts over subtleties around Komologorov complexity as well.  The paper sketches the theory cursorily, while its main focus is on the experimental results. It's only defined up to a constant and depends on the precise universal Turing machine encoder details.  I think the least squares toy example here seen through the Kolmogorv lens is the result that as $n \to\infty$ the excess information required to encode the fitted model over that required for the true parameters tends to zero in expectation under any encoding:
+
+```math
+\mathbb E\!\left[
+\left|K(T_n\mid\theta)-K(Q(\theta)\mid\theta)\right|
+\,\middle|\,\Theta=\theta
+\right]\longrightarrow 0
+```
+
+if we define $\Delta_n := K(T_n\mid\theta)-K(t_\theta\mid\theta)$.  Because $T_n$ takes values in a finite set $\mathcal F$, then $|\Delta_n|\le C$ for some $C >= 0$.  On the event $T_n=t_\theta$, we have $\Delta_n=0$. Therefore,
+```math
+\begin{aligned}
+\mathbb E[|\Delta_n|\mid\Theta=\theta]
+&=\mathbb E[|\Delta_n|\mathbf 1_{\{T_n\ne t_\theta\}}\mid\Theta=\theta]\\
+&\le C\,p_n(\theta)
+\end{aligned}
+```
+Since $p_n(\theta)\to 0$, we indeed have
+```math
+\mathbb E[|\Delta_n|\mid\Theta=\theta]\longrightarrow 0
+```
+
+## Conclusion
+
+These are really a fairly trivial results: they just says that - because the linear model is so rigid - as data generated stochastically from the true underlying process governed by $\theta$ becomes very large, then the model fitted to that data can't do anything else but reflect the underlying process (which it has only seen indirectly via the data) faithfully.  However, I think this is really what the paper is getting at even with the large transformer models, except the data required there is much larger, and the empirical results of the paper are non-trivial.
+
+This paper is a contribution to the "explaining the double descent phenomenon" literature.  But it does so along an axis of this phenomenon which is actually the classical (not-so-mysterious) one: i.e. keep the model size fixed, and increase the training data size.  We end up with an unsurprising result, which is qiute classical in spirit.  The more interesting axis is why do we observe model generalization where we travel along another axis: keep the training data size fixed but increase the size of the model, or the number of input features (see Wilson "Deep Learning is not so Mysterious or Different").
 
 
 ## References 
